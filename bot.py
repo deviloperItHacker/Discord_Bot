@@ -38,24 +38,25 @@ async def on_message(mes):
 	else:
 		if content.startswith(PREFIX+'show_users'):
 			command = content.split(" ")
-			try:
-				res = patern.findall(command[1])[0][2:]
-			except:
-				for r in guild.roles:
-					if r.name.lower() == command[1].lower():
-						res = r.id
-					else:
-						res = 0	
-			
-			role = guild.get_role(int(res))
-			if role != None:
-				text = Embed()
-				text.colour = role.color
-				text.title = 'All members with role: '+role.name
+			if len(command) > 1:
+				try:
+					res = patern.findall(command[1])[0][2:]
+				except:
+					for r in guild.roles:
+						if r.name.lower() == command[1].lower():
+							res = r.id
+						else:
+							res = 0	
 
-				for i, mem in enumerate(role.members):
-					text.add_field(name=str(i+1), value=mem.mention, inline=False)
-				await channel.send(embed=text)	
+				role = guild.get_role(int(res))
+				if role != None:
+					text = Embed()
+					text.colour = role.color
+					text.title = 'All members with role: '+role.name
+
+					for i, mem in enumerate(role.members):
+						text.add_field(name=str(i+1), value=mem.mention, inline=False)
+					await channel.send(embed=text)	
 
 		if content.startswith(PREFIX+'count_mes'):
 			command = content.split(' ')
